@@ -38,9 +38,16 @@
         methods: {
             moldingData(id) {
                 return this.issueAmounts[id].reduce((acc, x) => ({
-                    label: [...acc.label, x["created_at"]],
+                    labels: [...acc.labels, this.getDate(x["created_at"])],
                     data: [...acc.data, x["amount"]]
-                }), {label: [], data: []});
+                }), {labels: [], data: []});
+            },
+            getDate(str) {
+                const dt = new Date(str);
+                const y = dt.getFullYear();
+                const m = dt.getMonth() + 1;
+                const d = dt.getDate();
+                return `${y}-${m}-${d}`
             },
             ...mapActions([
                 'getCurrencies',

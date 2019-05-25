@@ -31,16 +31,19 @@
             },
             dataSet: {
                 type: Object,
-                default: {
+                default: () => ({
                     labels: {
                         type: Array,
-                        default: []
-                    },
+                        default:
+                            []
+                    }
+                    ,
                     data: {
                         type: Array,
-                        default: []
+                        default:
+                            []
                     }
-                }
+                })
             },
             accountAmount: {
                 type: String,
@@ -51,8 +54,26 @@
             return {
                 datacollection: null,
                 options: {
+                    legend: false,
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: false,
+                                min: -200000,
+                                max: 200000
+                            }
+                        }]
+                    }
                 },
                 chartStyle: {
                     height: '140px',
@@ -86,7 +107,7 @@
 <style lang="scss" scoped>
   .widget {
     /*width: 512px;*/
-    padding: 10px;
+    /*padding: 10px;*/
     height: 256px;
     width: 480px;
     margin: 10px 10px;
