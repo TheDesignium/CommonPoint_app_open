@@ -1,11 +1,12 @@
 <template>
   <el-card class="widget">
     <div slot="header">
-      <strong>
-        <slot name="header">
-          currency name
-        </slot>
-      </strong>
+      <div class="current-name">{{name}}</div>
+      <div class="header-right">
+        <span class="small-font">total</span><span class="large-font">10000P</span>
+        <span class="space"></span>
+        <span class="small-font">latest</span><span class="large-font">+1000P</span>
+      </div>
     </div>
     <div>
       <widget-chart :chart-data="datacollection" :options="options" :styles="chartStyle"></widget-chart>
@@ -19,6 +20,33 @@
     export default {
         name: 'Widget',
         components: {WidgetChart},
+        props: {
+            name: {
+                type: String,
+                default: 'noname'
+            },
+            id: {
+                type: String,
+                default: ''
+            },
+            dataSet: {
+                type: Object,
+                default: {
+                    labels: {
+                        type: Array,
+                        default: []
+                    },
+                    data: {
+                        type: Array,
+                        default: []
+                    }
+                }
+            },
+            accountAmount: {
+                type: String,
+                default: '0'
+            }
+        },
         data() {
             return {
                 datacollection: null,
@@ -27,7 +55,7 @@
                     maintainAspectRatio: false
                 },
                 chartStyle: {
-                    height: '160px',
+                    height: '140px',
                     position: 'relative'
                 }
             }
@@ -37,21 +65,19 @@
         },
         methods: {
             fillData() {
-                this.datacollection = {
-                    labels: [0, this.getRandomInt(), 10, 'a'],
-                    datasets: [
-                        {
-                            label: 'Data One',
-                            borderColor: '#68f889',
-                            backgroundColor: '#68f889',
-                            data: [5, this.getRandomInt(), 10, 14],
-                            fill: false
-                        }
-                    ]
-                }
+                this.datacollection = this.makeDataSets()
             },
-            getRandomInt() {
-                return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+            makeDataSets() {
+                return {
+                    labels: this.dataSet.labels,
+                    datasets: [{
+                        label: 'Data one',
+                        borderColor: '#1ae9e3',
+                        backgroundColor: '#1ae9e3',
+                        fill: false,
+                        data: this.dataSet.data
+                    }]
+                };
             }
         }
     }
@@ -59,9 +85,37 @@
 
 <style lang="scss" scoped>
   .widget {
-    width: 512px;
+    /*width: 512px;*/
+    padding: 10px;
     height: 256px;
-    margin: 10px 30px;
+    width: 480px;
+    margin: 10px 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+
+    .current-name {
+      font-size: 24px;
+    }
+
+    .header-right {
+      position: absolute;
+      top: 45px;
+      right: 20px;
+
+      .small-font {
+        font-size: 16px;
+      }
+
+      .large-font {
+        font-size: 20px;
+      }
+
+      .space {
+        margin-right: 10px;
+      }
+    }
   }
 
 </style>
