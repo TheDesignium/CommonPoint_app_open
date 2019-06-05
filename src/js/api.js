@@ -11,6 +11,14 @@ export default {
             .then(json => onSuccess(json))
             .catch(e => onError(e));
     },
+    issueAmountsById({ids}, onSuccess, onError) {
+        return request('currencies/issue-amount', {
+            method: 'POST',
+            body: JSON.stringify({"currency_ids": ids})
+        })
+            .then(json => onSuccess(json))
+            .catch(e => onError(e));
+    },
     lastestIssueAmount({id}, onSuccess, onError) {
         return request(`currencies/${id}/issue-amounts/latest`, {})
             .then(json => onSuccess(json))
