@@ -29,9 +29,12 @@
         async created() {
             try {
                 await this.getCurrencies();
-                await Promise.all(this.currencies.map(x => this.getIssueAmount({id: x.id})));
+                // await Promise.all(this.currencies.map(x => this.getIssueAmount({id: x.id})));
+                const idList = this.currencies.map(x => x.id);
+                await this.getIssueAmountsById({ids: idList});
                 this.loaded = true;
             } catch (e) {
+                console.error(e);
                 // Error handing...
             }
         },
@@ -51,7 +54,8 @@
             },
             ...mapActions([
                 'getCurrencies',
-                'getIssueAmount'
+                'getIssueAmount',
+                'getIssueAmountsById'
             ]),
         }
     }

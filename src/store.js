@@ -13,8 +13,8 @@ export default new Vuex.Store({
         setCurrencies(state, data) {
             state.currencies = data;
         },
-        setIssueAmounts(state, {data, id}) {
-            state.issueAmounts = {...state.issueAmounts, [id]: data};
+        setIssueAmounts(state, data) {
+            state.issueAmounts = {...state.issueAmounts, ...data};
         },
 
     },
@@ -36,9 +36,21 @@ export default new Vuex.Store({
                 payload,
                 json => {
                     commit('setIssueAmounts', {
-                        data: json["issue_amounts"],
-                        id: payload.id
+                        [payload.id]: json["issue_amounts"]
                     });
+                    return true;
+                },
+                err => {
+                    console.error(err);
+                    return false;
+                }
+            )
+        },
+        getIssueAmountsById({commit, state}, payload) {
+            return api.issueAmountsById(
+                payload,
+                json => {
+                    commit('setIssueAmounts', json["issue_amounts"]);
                     return true;
                 },
                 err => {
